@@ -12,10 +12,10 @@ def createDataSet(trainingDataFolder, testDataFolder):
 	trainingLabels = []
 	testLabels = []
 
-	path = os.getcwd() + '\\' + trainingDataFolder
+	path = os.getcwd() + '/' + trainingDataFolder
 	for file in os.listdir(path):
 		text = ''
-		f = open(trainingDataFolder + '\\' + file, "rt")
+		f = open(trainingDataFolder + '/' + file, "rt")
 
 		# 줄 단위로 읽어오기, \n제거
 		while (True):
@@ -34,10 +34,10 @@ def createDataSet(trainingDataFolder, testDataFolder):
 		trainingSet.append(tList)
 		trainingLabels.append(int(file[0]))
 
-	path = os.getcwd() + '\\' + testDataFolder
+	path = os.getcwd() + '/' + testDataFolder
 	for file in os.listdir(path) :
 		text = ''
-		f = open(testDataFolder + '\\' + file, "rt")
+		f = open(testDataFolder + '/' + file, "rt")
 
 		while (True):
 			line = f.readline()
@@ -62,7 +62,8 @@ def classify0(testObj, trainingSet, labels, k):
 
 	dataSetSize = dataSet.shape[0]
 	diffMat = np.tile(inX, (dataSetSize, 1)) - dataSet
-	distances = (diffMat ** 2).sum(axis = 1) ** 0.5
+	sqDistances = (diffMat ** 2).sum(axis = 1)
+	distances = sqDistances ** 0.5
 	sortedDistIndicies = distances.argsort()
 
 	classCount = {}
@@ -89,4 +90,3 @@ for k in range(20):
 		if testLabels[i] != calcX:
 			fail += 1
 	print(int(float(fail) / float(len(testLabels)) * 100))
-    #print("k = {}, {}".format(k + 1, fail / len(testLabels) * 100))
